@@ -1,0 +1,24 @@
+{
+  "fecha": "2026-11-23T18:42:31.178Z",
+  "nota": "Prueba de restricciones UNIQUE en la base, porque la API de vehiculos/conductores aun no existe.",
+  "resultados": [
+    {
+      "caso": "placa de vehiculo repetida",
+      "codigo": "23505",
+      "restriccion": "vehiculos_placa_key",
+      "mensaje": "duplicate key value violates unique constraint \"vehiculos_placa_key\""
+    },
+    {
+      "caso": "documento de conductor repetido",
+      "codigo": "23505",
+      "restriccion": "conductores_documento_key",
+      "mensaje": "duplicate key value violates unique constraint \"conductores_documento_key\""
+    },
+    {
+      "caso": "numero de licencia repetido",
+      "codigo": "23505",
+      "restriccion": "conductores_numero_licencia_key",
+      "mensaje": "duplicate key value violates unique constraint \"conductores_numero_licencia_key\""
+    }
+  ]
+}

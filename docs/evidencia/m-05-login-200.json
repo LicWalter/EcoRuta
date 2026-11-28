@@ -1,0 +1,11 @@
+{
+  "mensaje": "Inicio de sesión exitoso",
+  "token": "eyJhbGciOiJIUzI1...<recortado: el token completo no se versiona>",
+  "usuario": {
+    "id": 1,
+    "nombre": "Administrador EcoRuta",
+    "correo": "admin@ecoruta.co",
+    "rol": "admin"
+  },
+  "nota": "Respuesta real de POST /api/auth/login (HTTP 200) del 2026-11-23. El JWT de 237 caracteres se recorta a proposito: solo era valido 8 h y con el JWT_SECRET local."
+}

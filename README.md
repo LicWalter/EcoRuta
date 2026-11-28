@@ -17,13 +17,13 @@ Aplicación web para gestionar y consultar la recolección de basura en Buenaven
 | # | Rol | Responsable de | Integrante | GitHub |
 |---|-----|----------------|------------|--------|
 | 1 | Líder y coordinación | Repositorio, README, releases, revisión de pull requests y evidencia | Victor Manuel Vera Angulo | @VictorManuelVera |
-| 2 | Backend 1 (líder de backend) | Autenticación, seguridad, vehículos, endpoint de posiciones y simulación | Andrés Fernández | _por completar_ |
-| 3 | Backend 2 | Conductores, barrios, rutas, programación, validaciones e indicadores | Rubén Camacho | _por completar_ |
+| 2 | Backend 1 (líder de backend) | Autenticación, seguridad, vehículos, endpoint de posiciones y simulación | Andres Fernando Fernández Riascos | @AFdez11 |
+| 3 | Backend 2 | Conductores, barrios, rutas, programación, validaciones e indicadores | Rubén Alberto Camacho Benitez | @RCamaB22 |
 | 4 | Base de datos y despliegue | PostgreSQL en Neon, migraciones, datos de prueba y publicación | Victor Manuel Vera Angulo | @VictorManuelVera |
-| 5 | Frontend 1 (líder de frontend) | Login, dashboard, vehículos, barrios y rutas | Walter David Estupiñán | _por completar_ |
-| 6 | Frontend 2 | Proyecto base del frontend, conductores, mapa, programación y simulación en el mapa | Johan Alexander Murillo Sinisterra | _por completar_ |
-| 7 | Calidad y evidencia | Pruebas, capturas, instrucciones de verificación y video | _por completar_ (dancenot02) | _por completar_ |
-| 8 | Panel ciudadano | Diseño y construcción del panel ciudadano y puntos de recolección | Luis David Arias | _por completar_ |
+| 5 | Frontend 1 (líder de frontend) | Login, dashboard, vehículos, barrios y rutas | Walter David Estupiñán Castillo | @LicWalter |
+| 6 | Frontend 2 | Proyecto base del frontend, conductores, mapa, programación y simulación en el mapa | Johan Alexander Murillo Sinisterra | @johanmurillo067-prog |
+| 7 | Calidad y evidencia | Pruebas, capturas, instrucciones de verificación y video | Jhon Leyner Orobio Paredes | @Dancenot0 |
+| 8 | Panel ciudadano | Diseño y construcción del panel ciudadano y puntos de recolección | Luis David Arias Isaza | @PapiBufff |
 
 ## Tecnologías
 
@@ -54,18 +54,144 @@ docs/evidencia/       Capturas y videos de cada entrega
 
 ## Cómo ejecutar el proyecto
 
-_Pendiente: se completa en la entrega 1 con los comandos reales del backend y el frontend._
+Probado desde cero con una base de datos vacía, clonando la rama `Dev` en una carpeta nueva (ECO-35).
 
-1. Requisitos.
-2. Variables de entorno: copiar `.env.example` a `.env` y completar los valores.
-3. Crear la base de datos y correr las migraciones.
-4. Cargar los datos de prueba.
-5. Crear el administrador inicial.
-6. Iniciar backend y frontend.
+### 1. Requisitos
+
+- Node.js LTS (probado con la versión 22) y npm.
+- Git.
+- Una base PostgreSQL vacía: una rama nueva en Neon o PostgreSQL instalado en el equipo.
+- Visual Studio Code con la extensión Thunder Client (opcional, para probar a mano).
+
+### 2. Clonar el repositorio
+
+```bash
+git clone -b Dev https://github.com/EcoRuta-E4/EcoRuta.git
+cd EcoRuta
+```
+
+### 3. Crear la base de datos
+
+**En Neon:** crear una rama nueva (por ejemplo `prueba-local`), entrar a **Connect** y copiar la cadena de conexión con la opción **Connection pooling desactivada**. La cadena directa no lleva `-pooler` en el host. Debe terminar en `?sslmode=require`.
+
+**En PostgreSQL local:**
+
+```sql
+CREATE DATABASE ecoruta;
+```
+
+### 4. Variables de entorno del backend
+
+El archivo `.env` va dentro de `backend/`. Los scripts se ejecutan desde esa carpeta y no leen un `.env` en la raíz.
+
+```bash
+cd backend
+cp ../.env.example .env
+```
+
+En Windows (CMD) se usa `copy ..\.env.example .env`.
+
+Abrir `backend/.env` y cambiar como mínimo:
+
+- `DATABASE_URL`: la cadena directa de Neon o `postgresql://usuario:contrasena@localhost:5432/ecoruta` si es local.
+- `JWT_SECRET`: cualquier texto largo.
+- `ADMIN_EMAIL` y `ADMIN_PASSWORD`: correo y clave del administrador inicial (la clave con 8 caracteres o más).
+
+El `.env` nunca se sube a GitHub (ya está en `.gitignore`).
+
+### 5. Instalar, migrar, cargar datos y crear el administrador
+
+Todo desde `backend/`:
+
+```bash
+npm install
+npm run migrate up      # crea las tablas, vistas y funciones (15 migraciones)
+npm run seed            # carga la geografía y los datos de prueba
+npm run crear-admin     # crea o actualiza el administrador del .env
+```
+
+Cada comando termina con `Migrations complete!`, `Datos de prueba listos.` y `Administrador listo: <correo>`.
+
+Para volver a cargar los datos de prueba sobre una base que ya los tiene: `npm run seed -- --reset` (no borra el administrador).
+
+### 6. Iniciar el backend y probarlo
+
+```bash
+npm run dev             # http://localhost:3000
+```
+
+En otra terminal, también desde `backend/`:
+
+```bash
+npm test                # suite de Vitest (ver «Cómo correr las pruebas»)
+npm run test:live       # login, perfil, rutas protegidas, dashboard y logout contra la base del .env
+```
+
+`npm run test:live` debe mostrar los 8 pasos con `OK`. Para probar a mano, importar `backend/thunder-collection_ecoruta_auth.json` en Thunder Client, ejecutar el login con el correo y la clave del `.env` y pegar el token en el encabezado `Authorization: Bearer <token>` de las demás peticiones. `GET http://localhost:3000/api/health` responde `{"estado":"ok", ...}`.
+
+### 7. Iniciar el frontend
+
+Con el backend corriendo, en otra terminal:
+
+```bash
+cd frontend
+npm install
+cp .env.example .env    # VITE_API_URL=http://localhost:3000
+npm run dev             # http://localhost:5173
+```
+
+Entrar a `http://localhost:5173/login` con el administrador creado en el paso 5.
+
+### Problemas encontrados al probar
+
+| Problema | Causa | Solución |
+|---|---|---|
+| `The DATABASE_URL environment variable is not set` al correr `npm run migrate up` | El `.env` estaba en la raíz del repositorio | Moverlo a `backend/.env` |
+| `Los datos de prueba ya existen` al repetir `npm run seed` | La base ya tenía los datos | `npm run seed -- --reset` |
+| Aviso `SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'` al conectar con Neon | Mensaje de la librería `pg` por usar `sslmode=require` en la cadena | No impide nada; se puede quitar cambiando el final de la cadena a `?sslmode=verify-full` |
+
+## Cómo correr las pruebas
+
+El backend usa **Vitest** y **Supertest**. La suite principal simula PostgreSQL, así que no necesita base de datos.
+
+```bash
+cd backend
+npm install
+npm test            # ejecuta toda la suite
+npm run test:watch  # modo interactivo
+```
+
+Resultado actual: **56 pruebas aprobadas** contra una base real (54 si se corre sin base; las 2 de integración se omiten).
+
+Cubre:
+
+- login correcto e incorrecto, cuenta inactiva, validación de datos y falta de `JWT_SECRET`;
+- rutas del panel sin token (401), token inválido (401) y rol distinto de administrador (403);
+- dashboard: indicadores, servicios de hoy, filtros y 503 cuando faltan migraciones;
+- CORS y JSON mal formado.
+
+Con PostgreSQL real (rama `test` de Neon o una base local) para no tocar los datos de `dev`:
+
+```powershell
+$env:TEST_DATABASE_URL="postgresql://usuario:clave@host:puerto/ecoruta?sslmode=require"
+npm test
+```
+
+El registro detallado (paso, resultado esperado, resultado obtenido y fecha) está en
+[`docs/pruebas.md`](docs/pruebas.md), con las respuestas guardadas en `docs/evidencia/`.
+Las pruebas de vehículos y conductores (RNF-16) quedan pendientes como API porque esos endpoints
+todavía no existen en `Dev`; la base sí está verificada (rechaza placa, documento y licencia
+duplicados con `23505`).
 
 ## Verificación del acceso administrativo
 
-_Pendiente (Entrega 1): pasos para iniciar y cerrar sesión, ver el bloqueo de rutas sin sesión y abrir el dashboard._
+1. Abrir `http://localhost:5173/login`.
+2. Probar una contraseña incorrecta: aparece «Correo o contraseña incorrectos» y no se crea sesión.
+3. Entrar con las credenciales correctas: se abre `/dashboard` con el menú (Vehículos, Conductores, Barrios y Rutas, Mapa de Rutas, Programación y Simulación) y los indicadores del backend.
+4. Pulsar «Cerrar sesión»: se borra el token y la aplicación vuelve a `/login`.
+5. Sin sesión, abrir `http://localhost:5173/dashboard`: redirige a `/login` con el aviso «Inicia sesión para continuar».
+
+Las capturas de esta verificación están en [`docs/evidencia/entrega-1/`](docs/evidencia/entrega-1/README.md).
 
 ## URLs públicas
 
@@ -78,7 +204,7 @@ Las credenciales de demostración se envían por Teams el día de cada cierre.
 
 | Entrega | Contenido | Cierre | Release | Estado |
 |---------|-----------|--------|---------|--------|
-| 1 | Acceso administrativo | lun 23 nov 2026 | `semana-1` | Pendiente |
+| 1 | Acceso administrativo | lun 23 nov 2026 | `semana-1` | Entregada |
 | 2 | Vehículos, conductores y dashboard | lun 30 nov 2026 | `semana-2` | Pendiente |
 | 3 | Rutas, mapa y primera URL pública | lun 7 dic 2026 | `semana-3` | Pendiente |
 | 4 | Programación y cierre | lun 14 dic 2026 | `semana-4` | Pendiente |

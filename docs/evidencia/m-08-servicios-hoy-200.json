@@ -1,0 +1,17 @@
+{
+  "datos": [
+    {
+      "id": 4,
+      "ruta_id": 1,
+      "ruta": "Ruta 1 · Centro",
+      "sector": "Comuna 3 · Isla",
+      "zona": "Isla",
+      "comuna": "Comuna 3",
+      "vehiculo": "TUR101",
+      "conductor": "Carlos Andrés Mosquera Rivas",
+      "hora_inicio": "06:00",
+      "hora_fin": "14:00",
+      "estado": "en_curso"
+    }
+  ]
+}

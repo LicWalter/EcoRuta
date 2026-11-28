@@ -1,0 +1,221 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "EcoRuta - Autenticación, Admin y Dashboard (ECO-3, ECO-12)",
+  "collectionId": "ecoruta-auth-eco-3",
+  "dateExported": "2026-11-21T22:45:00.000Z",
+  "version": "1.1",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "req-health",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "1. Verificación de Salud (Health Check)",
+      "url": "http://localhost:3000/api/health",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-11-21T22:45:00.000Z",
+      "modified": "2026-11-21T22:45:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req-login-valido",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "2. Iniciar Sesión - Exitoso (RF-01)",
+      "url": "http://localhost:3000/api/auth/login",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2026-11-21T22:45:00.000Z",
+      "modified": "2026-11-21T22:45:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"correo\": \"admin@ecoruta.co\",\n  \"contrasena\": \"Admin123456*\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "req-login-invalido",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "3. Iniciar Sesión - Credenciales Incorrectas (RF-02)",
+      "url": "http://localhost:3000/api/auth/login",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2026-11-21T22:45:00.000Z",
+      "modified": "2026-11-21T22:45:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"correo\": \"admin@ecoruta.co\",\n  \"contrasena\": \"clave-equivocada\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "req-perfil",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "4. Obtener Perfil - Autenticado (RF-01, RF-04)",
+      "url": "http://localhost:3000/api/auth/perfil",
+      "method": "GET",
+      "sortNum": 40000,
+      "created": "2026-11-21T22:45:00.000Z",
+      "modified": "2026-11-21T22:45:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-admin-verificar",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "5. Panel Admin - Verificar Permisos (RF-04)",
+      "url": "http://localhost:3000/api/admin/verificar",
+      "method": "GET",
+      "sortNum": 50000,
+      "created": "2026-11-21T22:45:00.000Z",
+      "modified": "2026-11-21T22:45:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-logout",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "6. Cerrar Sesión (RF-03)",
+      "url": "http://localhost:3000/api/auth/logout",
+      "method": "POST",
+      "sortNum": 60000,
+      "created": "2026-11-21T22:45:00.000Z",
+      "modified": "2026-11-21T22:45:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req-dashboard-resumen",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "7. Dashboard - Resumen con datos reales (RF-22)",
+      "url": "http://localhost:3000/api/admin/dashboard-resumen",
+      "method": "GET",
+      "sortNum": 70000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-dashboard-resumen-401",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "8. Dashboard - Resumen sin token (debe dar 401)",
+      "url": "http://localhost:3000/api/admin/dashboard-resumen",
+      "method": "GET",
+      "sortNum": 80000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": []
+    },
+    {
+      "_id": "req-servicios-hoy",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "9. Servicios de hoy - Todos (RF-23)",
+      "url": "http://localhost:3000/api/admin/servicios-hoy",
+      "method": "GET",
+      "sortNum": 90000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-servicios-hoy-zona",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "10. Servicios de hoy - Filtro zona=Isla",
+      "url": "http://localhost:3000/api/admin/servicios-hoy?zona=Isla",
+      "method": "GET",
+      "sortNum": 100000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-servicios-hoy-comuna-estado",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "11. Servicios de hoy - Filtro comuna_id y estado (RF-24)",
+      "url": "http://localhost:3000/api/admin/servicios-hoy?comuna_id=3&estado=conflicto",
+      "method": "GET",
+      "sortNum": 110000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-servicios-hoy-400",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "12. Servicios de hoy - Filtro inválido (debe dar 400)",
+      "url": "http://localhost:3000/api/admin/servicios-hoy?zona=Norte",
+      "method": "GET",
+      "sortNum": 120000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer PEGA_AQUI_TU_TOKEN_JWT"
+        }
+      ]
+    },
+    {
+      "_id": "req-servicios-hoy-401",
+      "colId": "ecoruta-auth-eco-3",
+      "containerId": "",
+      "name": "13. Servicios de hoy - Sin token (debe dar 401)",
+      "url": "http://localhost:3000/api/admin/servicios-hoy",
+      "method": "GET",
+      "sortNum": 130000,
+      "created": "2026-11-23T15:00:00.000Z",
+      "modified": "2026-11-23T15:00:00.000Z",
+      "headers": []
+    }
+  ]
+}
