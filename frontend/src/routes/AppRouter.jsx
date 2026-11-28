@@ -7,6 +7,7 @@ import HomePage from '../pages/publico/HomePage';
 import LoginPage from '../pages/publico/LoginPage';
 import DashboardPage from '../pages/admin/DashboardPage';
 import SeccionPage from '../pages/admin/SeccionPage';
+import ConductoresPage from '../pages/admin/conductores/ConductoresPage';
 
 export default function AppRouter() {
   return (
@@ -20,6 +21,7 @@ export default function AppRouter() {
           <Route element={<ProtectedRoute />}>
             <Route element={<Layout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/admin/conductores" element={<ConductoresPage />} />
               {SECCIONES.filter((s) => s.to !== '/dashboard').map((s) => (
                 <Route key={s.to} path={s.to} element={<SeccionPage />} />
               ))}
